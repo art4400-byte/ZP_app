@@ -290,4 +290,4 @@ result_label.grid(row=9, column=2, columnspan=2, pady=10)
 # Запуск основного цикла
 root.mainloop()
 
-# Тест
+# Тест 1.2
