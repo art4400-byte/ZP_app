@@ -1,5 +1,5 @@
 import tkinter as tk
-from tkinter import messagebox, filedialog
+from tkinter import messagebox, filedialog, ttk
 from openpyxl import load_workbook
 
 # Константы
@@ -18,6 +18,7 @@ def result_test_window():
     test_window = tk.Toplevel()
     test_window.title("Ввод результата теста")
     test_window.geometry("300x150")
+    test_window.protocol("WM_DELETE_WINDOW", lambda: root.destroy())  # Завершаем программу при нажатии крестика
     test_window.grab_set()  # Делаем окно модальным
 
     tk.Label(test_window, text="Введите результат теста (0-100):").pack(pady=10)
@@ -43,7 +44,7 @@ def result_test_window():
             messagebox.showerror("Ошибка", "Пожалуйста, введите число")
 
     # Создание кнопки "Применить"
-    tk.Button(test_window, text="Применить", command=apply_test_result).pack(pady=10)
+    ttk.Button(test_window, text="Применить", command=apply_test_result).pack(pady=10)
 
 
 # Функция для корректирования константы в зависимости от результата теста
@@ -66,6 +67,9 @@ root = tk.Tk()
 root.title("Подсчет ЗП")
 root.geometry("600x400")  # Создаем основное окно
 root.withdraw()  # Скрываем основное окно
+
+# Задаем цвет виджетов
+ttk.Style().configure(".", font="helvetica 9", foreground="#050000", padding=8)
 
 # Показываем окно ввода результата теста перед основным окном
 result_test_window()
@@ -118,7 +122,7 @@ def export_to_excel():
             title="Выберите файл Excel для сохранения"
         )
 
-        if not filepath:    # Если пользоваетль отменил выбор
+        if not filepath:  # Если пользоваетль отменил выбор
             return
 
         # Загрузка существующего файла .xlxs
@@ -128,7 +132,7 @@ def export_to_excel():
         ws = wb.active
 
         # Находит первую свободную строку для записи в указаном столбце
-        target_column = "B" # Указывается нужный столбец
+        target_column = "B"  # Указывается нужный столбец
         row_num = 1
         while ws[f"{target_column}{row_num}"].value is not None:
             row_num += 1
@@ -260,27 +264,27 @@ entry_sick = tk.Entry(root, width=20)
 entry_sick.grid(row=8, column=1, padx=10, pady=5)
 
 # Кнопка для экспорта в Excel
-button_export = tk.Button(root, text="Экспорт в Excel", command=export_to_excel)
+button_export = ttk.Button(root, text="Экспорт в Excel", command=export_to_excel)
 button_export.place(relx=0.74, rely=0.92, anchor="center")
 
 # Кнопка для вычисления
-button_calculate = tk.Button(root, text="Вычислить", command=calculate)
+button_calculate = ttk.Button(root, text="Вычислить", command=calculate)
 button_calculate.place(relx=0.66, rely=0.78, anchor="center")
 
 # Кнопка для очистки полей ввода
-button_clear = tk.Button(root, text=" Очистить ", command=clear_entries)
+button_clear = ttk.Button(root, text=" Очистить ", command=clear_entries)
 button_clear.place(relx=0.82, rely=0.78, anchor="center")
 
 # Кнопка для добавления 350
-button_add_350 = tk.Button(root, text="Добавить 350", command=add_350)
+button_add_350 = ttk.Button(root, text="Добавить 350", command=add_350)
 button_add_350.grid(row=5, column=2, pady=10)
 
 # Кнопка для добавления 750
-button_add_750 = tk.Button(root, text="Добавить 750", command=add_750)
+button_add_750 = ttk.Button(root, text="Добавить 750", command=add_750)
 button_add_750.grid(row=6, column=2, pady=10)
 
 # Кнопка для добавления премии без штрафов
-button_add_not_fine = tk.Button(root, text="Премия без штрафов", command=add_not_fine)
+button_add_not_fine = ttk.Button(root, text="Премия без штрафов", command=add_not_fine)
 button_add_not_fine.grid(row=7, column=2, pady=10)
 
 # Метка для отображения текущего результата
@@ -290,4 +294,4 @@ result_label.grid(row=9, column=2, columnspan=2, pady=10)
 # Запуск основного цикла
 root.mainloop()
 
-# Тест 1.2 проверка
+# Тест 1.3 проверка
